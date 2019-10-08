@@ -1,0 +1,15 @@
+{
+  "name": "projetrestfull",
+  "version": "1.0.0",
+  "description": "projet license client serveur restfull",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Andreu Sebastien",
+  "license": "ISC",
+  "dependencies": {
+    "jsonwebtoken": "^8.5.1",
+    "knex": "^0.19.4"
+  }
+}
