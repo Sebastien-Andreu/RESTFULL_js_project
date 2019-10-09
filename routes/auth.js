@@ -11,13 +11,10 @@ module.exports = async (ctx) => {
 
   const dbUser = await db.first('*').from('Auth').where({ username }); //recupere l'users depuis la BD
   if (!dbUser) ctx.throw(401, 'No such user.'); // si il ne trouve pas alors 401 error
-  console.log(dbUser);
 
   if (password === dbUser.password) { // si le mot de passe correspond
-    console.log(dbUser);
     const payload = { sub: dbUser.ID, name: dbUser.username , role: dbUser.role}; // paylord sub: l'id de l'user
-    console.log(payload);
-    const token = jwt.sign(payload, secret, { expiresIn: '10min' }); // le serveur sign le token avec le paylord, le "secret", le temps de vie
+    const token = jwt.sign(payload, secret, { expiresIn: '50min' }); // le serveur sign le token avec le paylord, le "secret", le temps de vie
     ctx.body = token; //envoie le token au client
   } else {
     ctx.throw(401, 'Incorrect password.'); //error mot de passe

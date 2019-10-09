@@ -1,9 +1,8 @@
-module.exports = async function (ctx){
+module.exports = async function (ctx, next){
   console.log(ctx.request.jwtPayload.role);
   if (ctx.request.jwtPayload.role == 'admin'){
-    return true
+    await next()
   } else {
-    console.log("test1");
-    return false
+    ctx.throw(403, 'token verified but not access'); // token non valide
   }
 }

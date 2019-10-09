@@ -2,9 +2,14 @@ const DAOUsers = require('../DAO/DAOUsers')
 
 
 class Groups {
-  constructor(name, listOfUsers){
+  constructor(id, name, listOfUsers){
+    this.id = id;
     this.name = name;
     this.listOfUsers = listOfUsers;
+  }
+
+  get getId(){
+    return this.id;
   }
 
   get getName(){
@@ -16,7 +21,7 @@ class Groups {
   }
 
   toString(){
-    return '{Groups : ' + this.name + ' , ' + this.listOfUsers + '}';
+    return '{Groups ' + this.id + ' : ' + this.name + ' , ' + this.listOfUsers + '}';
   }
 }
 module.exports = Groups;

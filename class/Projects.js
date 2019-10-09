@@ -1,8 +1,13 @@
 class Projects {
-  constructor(name, desc, group){
+  constructor(id, name, desc, group){
+    this.id = id;
     this.name = name;
     this.desc = desc;
     this.group = group;
+  }
+
+  get getId(){
+    return this.id;
   }
 
   get getDesc(){
@@ -18,7 +23,7 @@ class Projects {
   }
 
   toString(){
-    return '{Project : ' + this.name + ' , ' + this.desc + ' , ' + this.group +' }';
+    return '{Project ' + this.id + ' : ' + this.name + ' , ' + this.desc + ' , ' + this.group +' }';
   }
 }
 module.exports = Projects;

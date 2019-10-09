@@ -12,5 +12,5 @@ module.exports = async (ctx, next) => {
     ctx.throw(err.status || 403, err.text); // token non valide
   }
 
-  await next(); // suivant
+  await next();
 };
