@@ -1,29 +1,29 @@
 class Projects {
   constructor(id, name, desc, group){
-    this.id = id;
-    this.name = name;
-    this.desc = desc;
-    this.group = group;
+    this.idProject = id;
+    this.nameProject = name;
+    this.descProject = desc;
+    this.groupProject = group;
   }
 
   get getId(){
-    return this.id;
+    return this.idProject;
   }
 
   get getDesc(){
-    return this.desc;
+    return this.descProject;
   }
 
   get getName(){
-    return this.name;
+    return this.nameProject;
   }
 
   get getGroup(){
-    return this.group
+    return this.groupProject
   }
 
   toString(){
-    return '{Project ' + this.id + ' : ' + this.name + ' , ' + this.desc + ' , ' + this.group +' }';
+    return '{Project ' + this.idProject + ' : ' + this.nameProject + ' , ' + this.descProject + ' , ' + this.groupProject +' }';
   }
 }
 module.exports = Projects;

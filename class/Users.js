@@ -1,24 +1,24 @@
 class Users {
   constructor(id, name, surname){
-    this.id = id;
-    this.name = name;
-    this.surname = surname;
+    this.idUser = id;
+    this.nameUser = name;
+    this.surnameUser = surname;
   }
 
   get getId(){
-    return this.id;
+    return this.idUser;
   }
 
   get getName(){
-    return this.name;
+    return this.nameUser;
   }
 
   get getSurname(){
-    return this.surname;
+    return this.surnameUser;
   }
 
   toString(){
-    return '{user  ' + this.id + ' : ' + this.surname + ' , ' + this.name + ' }';
+    return '{user  ' + this.idUser + ' : ' + this.surnameUser + ' , ' + this.nameUser + ' }';
   }
 }
 module.exports = Users;
