@@ -1,22 +1,34 @@
 const jwt = require('jsonwebtoken'); //require
 const db = require('../BD'); //bd
+var SimpleCrypto = require("simple-crypto-js").default;
 
-const secret = process.env.JWT_SECRET || 'secretOfAppli__9525+'; //le secret, il ne dois pas etre publique, que le serveur doit le connaitre
+const secret = process.env.JWT_SECRET || 'secretOfAppli__9525+';
 
+/**
+ * authentificated user to use this server
+ * @param ctx - The params send by user with HTML request
+ */
 module.exports = async (ctx) => {
-  const { username, password } = ctx.request.body; //recupere les données du POST
+  const { username, password } = ctx.request.body;
 
-  if (!username) ctx.throw(422, 'Username required.'); // si il n'y a pas d'username alors 422 error
-  if (!password) ctx.throw(422, 'Password required.'); // si il n'y a pas de password alors 422 error
+  if (!username) ctx.throw(422, 'Username required.');
+  if (!password) ctx.throw(422, 'Password required.');
 
-  const dbUser = await db.first('*').from('Auth').where({ username }); //recupere l'users depuis la BD
-  if (!dbUser) ctx.throw(401, 'No such user.'); // si il ne trouve pas alors 401 error
 
-  if (password === dbUser.password) { // si le mot de passe correspond
-    const payload = { sub: dbUser.ID, name: dbUser.username , role: dbUser.role}; // paylord sub: l'id de l'user
-    const token = jwt.sign(payload, secret, { expiresIn: '50min' }); // le serveur sign le token avec le paylord, le "secret", le temps de vie
-    ctx.body = token; //envoie le token au client
+  const dbUser = await db.first('*').from('Auth').where({ username });
+  if (!dbUser) ctx.throw(404, 'No such user.');
+
+  var _secretKey = "some-unique-key";
+  var simpleCrypto = new SimpleCrypto(_secretKey);
+
+  if (password === simpleCrypto.decrypt(dbUser.password)) {
+    const payload = { sub: dbUser.ID, name: dbUser.username , role: dbUser.role};
+    const token = jwt.sign(payload, secret, { expiresIn: '50min' });
+
+    console.log("Connection succes !!");
+    console.log("token : " + token);
+    ctx.body = token;
   } else {
-    ctx.throw(401, 'Incorrect password.'); //error mot de passe
+    ctx.throw(400, 'Incorrect password.');
   }
 };

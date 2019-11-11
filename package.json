@@ -9,7 +9,12 @@
   "author": "Andreu Sebastien",
   "license": "ISC",
   "dependencies": {
+    "jsdoc": "^3.6.3",
     "jsonwebtoken": "^8.5.1",
-    "knex": "^0.19.4"
+    "knex": "^0.19.4",
+    "simple-crypto-js": "^2.2.0"
+  },
+  "devDependencies": {
+    "supertest": "^4.0.2"
   }
 }

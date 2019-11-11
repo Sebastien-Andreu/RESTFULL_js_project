@@ -3,6 +3,10 @@ const DAOGroups = require('../DAO/DAOGroups')
 const Groups = require('../routes/Groups');
 const Project = require('../class/Projects');
 
+/**
+ * get all Project
+ * @param ctx - The params send by user with HTML request
+ */
 module.exports.all = async function (ctx) {
    const allProject = await DAOProject.all();
    const arrayProject = [];
@@ -10,52 +14,81 @@ module.exports.all = async function (ctx) {
      arrayProject.push(
        new Project(project.ID, project.Name, project.Desc, await Groups.findGroup(project.ID))
      );
-     console.log(arrayProject);
    }
-   ctx.body = arrayProject; //arrayUsers[0].getNom
+   console.log("All Groups :");
+   console.log(arrayProject);
+   ctx.status = 200;
+   ctx.body = arrayProject;
 }
 
+/**
+ * get one Projects with id
+ * @param ctx - The params send by user with HTML request
+ */
 module.exports.find = async function (ctx) {
   const project = await DAOProject.find(ctx.params.id);
   if (project){
+    ctx.status = 200;
     ctx.body = new Project(project.ID, project.Name, project.Desc, await Groups.findGroup(ctx.params.id));
+    console.log("Project find ! :");
+    console.log(new Project(project.ID, project.Name, project.Desc, await Groups.findGroup(ctx.params.id)));
   } else {
-    ctx.throw(401, 'Project not exist');
+    ctx.throw(404, 'Project not exist');
   }
 }
 
+/**
+ * add new Projects, checks that the Project does not exist
+ * @param ctx - The params send by user with HTML request
+ */
 module.exports.add = async function (ctx) {
-  const { name, desc } = ctx.request.body; //recupere les données du POST
+  const { name, desc } = ctx.request.body;
 
-  if (!name) ctx.throw(422, 'Name required.'); // si il n'y a pas d'username alors 422 error
-  if (!desc) ctx.throw(422, 'Desc required.'); // si il n'y a pas de password alors 422 error
+  if (!name) ctx.throw(422, 'Name required.');
+  if (!desc) ctx.throw(422, 'Desc required.');
 
   const project = await DAOProject.otherFind(name);
   if (project.length == 0){
+    ctx.status = 200;
    await DAOProject.add(name, desc);
+   console.log("Project added ! ( name : "+name+", desc : "+desc+")");
   } else {
-   ctx.throw(401, 'Project already exist'); // si il ne trouve pas alors 401 error
+   ctx.throw(404, 'Project already exist');
   }
 }
 
+/**
+ * delete Project with id, checks that the Project exist
+ * @param ctx - The params send by user with HTML request
+ */
 module.exports.delete = async function (ctx) {
   if (await DAOProject.find(ctx.params.id)) {
+    ctx.status = 200;
     await DAOProject.delete(ctx.params.id);
+    console.log("Project deleted ! ( idProject : "+ctx.params.id+")");
+
   } else {
-    ctx.throw(401, 'Project not exist'); // si il ne trouve pas alors 401 error
+    ctx.throw(404, 'Project not exist');
   }
 }
 
+/**
+ * update Project with id, checks that the Project exist
+ * @param ctx - The params send by user with HTML request
+ */
 module.exports.update = async function (ctx) {
-  const { name, desc } = ctx.request.body; //recupere les données du POST
+  const { name, desc } = ctx.request.body;
 
-  if (!name) ctx.throw(422, 'Name required.'); // si il n'y a pas d'username alors 422 error
-  if (!desc) ctx.throw(422, 'Desc required.'); // si il n'y a pas de password alors 422
+  if (!name) ctx.throw(422, 'Name required.');
+  if (!desc) ctx.throw(422, 'Desc required.');
 
   if (await DAOProject.find(ctx.params.id)) {
     await DAOProject.update(ctx.params.id, name, desc)
+    ctx.status = 200;
     ctx.body = new Project(ctx.params.id, name, desc, await Groups.findGroup(ctx.params.id));
+    console.log("Project updated ! ( "+ ctx.params.id + "," +name+","+desc +")");
+
   } else {
-    ctx.throw(401, 'Project not exist'); // si il ne trouve pas alors 401 error
+    ctx.throw(404, 'Project not exist');
   }
 }
