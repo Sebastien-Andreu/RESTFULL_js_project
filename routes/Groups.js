@@ -1,14 +1,12 @@
-const DAOGroups = require('../DAO/DAOGroups');
-const DAOUsers = require('../DAO/DAOUsers');
-const DAOProject = require('../DAO/DAOProjects');
-const Groups = require('../class/Groups');
-const Users = require('./Users');
-
 /**
  * get all Groups
  * @param ctx - The params send by user with HTML request
  */
 module.exports.all = async function (ctx) {
+    const DAOGroups = require('../DAO/DAOGroups');
+    const Groups = require('../class/Groups');
+    const Users = require('./Users');
+
     const allGroups = await DAOGroups.all();
     const arrayGroups = [];
     for await (let group of allGroups) {
@@ -25,6 +23,11 @@ module.exports.all = async function (ctx) {
  * @param ctx - The params send by user with HTML request
  */
 module.exports.find = async function (ctx) {
+  const DAOGroups = require('../DAO/DAOGroups');
+  const Groups = require('../class/Groups');
+  const Users = require('./Users');
+
+
   const group = await DAOGroups.find(ctx.params.id);
   if (group){
     ctx.status = 200;
@@ -41,6 +44,8 @@ module.exports.find = async function (ctx) {
  * @param ctx - The params send by user with HTML request
  */
 module.exports.add = async function (ctx) {
+  const DAOGroups = require('../DAO/DAOGroups');
+
   const { name } = ctx.request.body;
   if (!name) ctx.throw(422, 'Name required.');
 
@@ -59,6 +64,11 @@ module.exports.add = async function (ctx) {
  * @param ctx - The params send by user with HTML request
  */
 module.exports.delete = async function (ctx) {
+  const DAOGroups = require('../DAO/DAOGroups');
+  const DAOUsers = require('../DAO/DAOUsers');
+  const Users = require('./Users');
+
+
   if (await DAOGroups.find(ctx.params.id)) {
     await DAOGroups.delete(ctx.params.id);
     const allUserInThisGroup = await Users.findUsersInGroups(ctx.params.id);
@@ -76,6 +86,8 @@ module.exports.delete = async function (ctx) {
  * @param ctx - The params send by user with HTML request
  */
 module.exports.update = async function (ctx) {
+  const DAOGroups = require('../DAO/DAOGroups');
+
   const { name } = ctx.request.body;
   if (!name) ctx.throw(422, 'Name required.');
 
@@ -93,6 +105,9 @@ module.exports.update = async function (ctx) {
  * @param ctx - The params send by user with HTML request
  */
 module.exports.addProject = async function (ctx){
+  const DAOGroups = require('../DAO/DAOGroups');
+  const DAOProject = require('../DAO/DAOProjects');
+
   const { idGroup } = ctx.request.body;
   if (!idGroup) ctx.throw(422, 'id of Group required.');
 
@@ -115,6 +130,9 @@ module.exports.addProject = async function (ctx){
  * @param ctx - The params send by user with HTML request
  */
 module.exports.removeProject = async function (ctx){
+  const DAOGroups = require('../DAO/DAOGroups');
+  const DAOProject = require('../DAO/DAOProjects');
+
   const group = await DAOGroups.find(ctx.params.idGroups);
   if (group) {
     if (await DAOProject.find(ctx.params.idProject)) {
@@ -133,6 +151,10 @@ module.exports.removeProject = async function (ctx){
  * @param {int} id - The id of Group
  */
 module.exports.findGroup = async function (id){
+  const DAOGroups = require('../DAO/DAOGroups');
+  const Groups = require('../class/Groups');
+  const Users = require('./Users');
+
   const group = await DAOGroups.findGroup(id);
   if (group){
     return new Groups(group.id, group.name, await Users.findUsersInGroups(group.id))

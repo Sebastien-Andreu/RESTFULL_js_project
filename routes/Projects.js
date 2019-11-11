@@ -1,13 +1,12 @@
-const DAOProject = require('../DAO/DAOProjects')
-const DAOGroups = require('../DAO/DAOGroups')
-const Groups = require('../routes/Groups');
-const Project = require('../class/Projects');
-
 /**
  * get all Project
  * @param ctx - The params send by user with HTML request
  */
 module.exports.all = async function (ctx) {
+   const DAOGroups = require('../DAO/DAOGroups');
+   const Groups = require('../routes/Groups');
+   const Project = require('../class/Projects');
+
    const allProject = await DAOProject.all();
    const arrayProject = [];
    for await (let project of allProject) {
@@ -26,6 +25,10 @@ module.exports.all = async function (ctx) {
  * @param ctx - The params send by user with HTML request
  */
 module.exports.find = async function (ctx) {
+  const DAOProject = require('../DAO/DAOProjects')
+  const Groups = require('../routes/Groups');
+  const Project = require('../class/Projects');
+
   const project = await DAOProject.find(ctx.params.id);
   if (project){
     ctx.status = 200;
@@ -42,6 +45,8 @@ module.exports.find = async function (ctx) {
  * @param ctx - The params send by user with HTML request
  */
 module.exports.add = async function (ctx) {
+  const DAOProject = require('../DAO/DAOProjects')
+
   const { name, desc } = ctx.request.body;
 
   if (!name) ctx.throw(422, 'Name required.');
@@ -62,6 +67,8 @@ module.exports.add = async function (ctx) {
  * @param ctx - The params send by user with HTML request
  */
 module.exports.delete = async function (ctx) {
+  const DAOProject = require('../DAO/DAOProjects');
+
   if (await DAOProject.find(ctx.params.id)) {
     ctx.status = 200;
     await DAOProject.delete(ctx.params.id);
@@ -77,6 +84,10 @@ module.exports.delete = async function (ctx) {
  * @param ctx - The params send by user with HTML request
  */
 module.exports.update = async function (ctx) {
+  const DAOProject = require('../DAO/DAOProjects');
+  const Groups = require('../routes/Groups');
+  const Project = require('../class/Projects');
+
   const { name, desc } = ctx.request.body;
 
   if (!name) ctx.throw(422, 'Name required.');
