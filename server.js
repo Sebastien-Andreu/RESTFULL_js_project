@@ -21,12 +21,11 @@ router.post('/auth', koaBody(), authRoute);
 /**
  * all route to CRUD Users
  */
-router.get('/Users', koaBody(), authenticated, Users.all)//authenticated
+router.get('/Users', koaBody(), authenticated, Users.all)
 router.get('/Users/:id', koaBody(), authenticated, Users.find)
 router.post('/Users', koaBody(), authenticated, authorization, Users.add)
 router.delete('/Users/:id', koaBody(), authenticated, authorization, Users.delete)
 router.put('/Users/:id', koaBody(), authenticated, authorization, Users.update)
-
 
 /**
  * all route to CRUD Groups
@@ -38,12 +37,6 @@ router.delete('/Groups/:id', koaBody(), authenticated, authorization, Groups.del
 router.put('/Groups/:id', koaBody(), authenticated, authorization, Groups.update)
 
 /**
- * route to add and remove Users in Groups
- */
-router.post('/Groups/:id/Users', koaBody(), authenticated, authorization, Users.addInGroup)
-router.delete('/Groups/:idGroups/Users/:idUsers', koaBody(), authenticated, authorization, Users.removeInGroup)
-
-/**
  * all route to CRUD Project
  */
 router.get('/Projects', koaBody(),authenticated, Projects.all)
@@ -51,6 +44,12 @@ router.get('/Projects/:id', koaBody(),authenticated, Projects.find)
 router.post('/Projects', koaBody(), authenticated, authorization, Projects.add)
 router.delete('/Projects/:id', koaBody(), authenticated, authorization, Projects.delete)
 router.put('/Projects/:id', koaBody(), authenticated, authorization, Projects.update)
+
+/**
+ * route to add and remove Users in Groups
+ */
+router.post('/Groups/:id/Users', koaBody(), authenticated, authorization, Users.addInGroup)
+router.delete('/Groups/:idGroups/Users/:idUsers', koaBody(), authenticated, authorization, Users.removeInGroup)
 
 /**
  * route to add and remove Groups in Projects

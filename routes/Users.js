@@ -3,7 +3,7 @@
  * @param ctx - The params send by user with HTML request
  */
 module.exports.all = async function (ctx) {
-   const DAOGroups = require('../DAO/DAOGroups');
+   const DAOUsers = require('../DAO/DAOUsers');
    const Users = require('../class/Users');
 
    const allUsers = await DAOUsers.all();

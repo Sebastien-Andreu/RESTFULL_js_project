@@ -3,7 +3,7 @@
  * @param ctx - The params send by user with HTML request
  */
 module.exports.all = async function (ctx) {
-   const DAOGroups = require('../DAO/DAOGroups');
+   const DAOProject = require('../DAO/DAOProjects');
    const Groups = require('../routes/Groups');
    const Project = require('../class/Projects');
 
@@ -14,7 +14,7 @@ module.exports.all = async function (ctx) {
        new Project(project.ID, project.Name, project.Desc, await Groups.findGroup(project.ID))
      );
    }
-   console.log("All Groups :");
+   console.log("All Projects :");
    console.log(arrayProject);
    ctx.status = 200;
    ctx.body = arrayProject;
